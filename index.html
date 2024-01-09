@@ -54,10 +54,10 @@
           <div v-for="(player, index) in players" class="player">
             <label :for="`player-` + (index + 1) + `-color`" class="sr-only">Player {{ index + 1 }} color</label>
             <div class="player-piece" :name="`player-` + (index + 1) + `-color`" :id="`player-` + (index + 1) + `-color`" :style="`--player-color: ` + player.color + `; --player-score: ` + player.score / score.max" list="colors"></div>
-            <div class="player-track" :class="{ 'show-all-increments' : ((score.max - score.min) / score.increment) <= 10 }">
-              <span>{{ score.min }}</span>
+            <div class="player-track" :class="{ 'show-all-increments' : ((score.max - score.min) / score.increment) <= 10 }" :style="`--number-of-segments: ` + ((score.max - score.min) / score.increment)">
+              <span>{{ score.max }}</span>
               <template v-for="index in ((score.max - score.min) / score.increment)">
-                <span>{{ index * score.increment }}</span>
+                <span>{{ score.max - (index * score.increment) }}</span>
               </template>
             </div>
             <input type="range" class="player-piece-range" :style="`--player-color: ` + player.color + `;`" v-model="player.score" :min="score.min" :max="score.max" :step="score.increment" :disabled="winner && player != winner"></input>
@@ -71,7 +71,6 @@
             <span v-else>Good luck!</span>
           </button>
         </div>
-
       </div>
 
       <div class="overlay" :class="{active: modal.visible}" @click="closeModal($event)">
@@ -87,15 +86,17 @@
             </div>
             <div class="modal-body">
               <p v-if="modal.message" v-html="modal.message"></p>
-              <input type="number" min="1" :step="score.increment" class="score" v-model="score.max" placeholder="100" pattern="[0-9]{1,3}" inputmode="numeric">
+              <div class="form-group score-max">
+                <label for="score-max">Maximum score</label>
+                <input type="number" name="score-max" id="score-max" :step="score.increment" class="score" v-model="score.max" placeholder="100" pattern="[0-9]{1,3}" inputmode="numeric" @blur="scoreMaxCheck">
+              </div>
               <div class="players">
                 <div v-for="(player, index) in players" class="player" :class="[`player-` + (index + 1 ), { 'more-than-2-players' : players.length > 2 }]" :style="`--player-color: ` + player.color + `; --player-text-color: ` + setPlayerTextColor(player) + `;`">
                   <div class="form-group name">
                     <label :for="`player-` + (index + 1) + `-name`">Name</label>
                     <input type="text" :name="`player-` + (index + 1) + `-name`" :id="`player-` + (index + 1) + `-name`" class="player-name" v-model="player.name" placeholder="Name" @focus="selectAll($event)" @blur="nameCheck">
                   </div>
-                  <div class="form-group color">
-                    <label :for="`player-` + (index + 1) + `-color`">Color</label>
+                  <div class="form-group color">                    <label :for="`player-` + (index + 1) + `-color`">Color</label>
                     <input type="color" :name="`player-` + (index + 1) + `-color`" :id="`player-` + (index + 1) + `-color`" class="player-color" list="colors" v-model="player.color">
                     <datalist id="colors">
                       <option v-for="color in colors">{{ color }}</option>

@@ -9,6 +9,16 @@ const app = new Vue({
       max: 100,
       increment: 5,
     },
+    standard_score: {
+      min: 0,
+      max: 100,
+      increment: 5,
+    },
+    tournament_score: {
+      min: 0,
+      max: 4,
+      increment: 1,
+    },
     modal: {
       visible: false,
       title: '',
@@ -166,6 +176,19 @@ const app = new Vue({
         }
         this.players[i].score = Math.round(this.players[i].score / this.score.increment) * this.score.increment;
       }
+    },
+    scoreMaxCheck() {
+      if(this.score.max <= this.score.min + this.score.increment * 2) {
+        this.score.max = this.score.min + this.score.increment * 2;
+      }
+      if(isNaN(this.score.max)) {
+        this.score.max = this.standard_score.max;
+      }
+      if(this.score.max === '') {
+        this.score.max = this.standard_score.max;
+      }
+      // If it's not divisible by the increment, round it up
+      this.score.max = Math.ceil(this.score.max / this.score.increment) * this.score.increment;
     },
     openModal(title, message) {
       this.modal.title = title;
