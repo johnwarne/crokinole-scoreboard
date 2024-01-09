@@ -189,6 +189,12 @@ const app = new Vue({
       }
       // If it's not divisible by the increment, round it up
       this.score.max = Math.ceil(this.score.max / this.score.increment) * this.score.increment;
+      // If any player's score is at or above the new max, set it to one increment below the new max
+      for (let i = 0; i < this.players.length; i++) {
+        if(this.players[i].score >= this.score.max) {
+          this.players[i].score = this.score.max - this.score.increment;
+        }
+      }
     },
     openModal(title, message) {
       this.modal.title = title;
@@ -264,7 +270,7 @@ const app = new Vue({
     winner: {
       get() {
         for (let i = 0; i < this.players.length; i++) {
-          if(this.players[i].score >= this.score.max) {
+          if(this.players[i].score >= this.score.max && document.activeElement.id !== 'score-max') {
             console.log(this.players[i].name + ' wins!');
             this.launchConfetti({
               particleCount: 100,
@@ -282,16 +288,4 @@ const app = new Vue({
     this.loadData();
     // this.openSettingsModal();
   }
-});
-
-
-document.addEventListener('visibilitychange', function() {
-  // app.loadData();
-});
-
-
-['focus', 'blur', 'visibilitychange'].forEach(function(e) {
-  window.addEventListener(e, function() {
-    // app.loadData();
-  });
 });
