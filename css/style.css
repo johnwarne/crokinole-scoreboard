@@ -406,6 +406,9 @@ body #app > .players .player .form-group.increment-decrement button.increment {
 body #app > .players .player.didnt-win .form-group.player-name input {
   opacity: 0.25;
 }
+body #app > .players .player:first-of-type .form-group.player-name {
+  flex: 0 0 calc(30% + env(safe-area-inset-top) / 6);
+}
 body #app .track {
   position: relative;
   display: grid;

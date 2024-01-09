@@ -328,6 +328,9 @@ body {
 						}
 					}
 				}
+				&:first-of-type .form-group.player-name {
+					flex: 0 0 calc(30% + env(safe-area-inset-top) / 6); // Prevents the first player's name from being cut off on iOS
+				}
 			}
 		}
 
