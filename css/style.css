@@ -351,6 +351,7 @@ body #app > .players .player .form-group.player-score {
 }
 body #app > .players .player .form-group.player-score input {
   -moz-appearance: textfield;
+  appearance: textfield;
   font-size: clamp(1em, 100cqb, 50cqi);
   line-height: 1;
 }
@@ -387,7 +388,6 @@ body #app > .players .player .form-group.increment-decrement button.decrement {
   text-align: center;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  /* border: 1px solid red; */
 }
 body #app > .players .player .form-group.increment-decrement button.increment.disabled,
 body #app > .players .player .form-group.increment-decrement button.decrement.disabled {
@@ -444,7 +444,21 @@ body #app .track * {
   touch-action: manipulation;
 }
 body #app .track > * {
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1), 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+}
+body #app .track .track-bg {
+  position: absolute;
+  display: block;
+  content: "";
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: url(../img/wood-grain.svg);
+  background-size-y: 100vh;
+  background-position: center;
+  opacity: 0.2;
+  z-index: -1;
 }
 body #app .track .inner {
   position: relative;
@@ -522,7 +536,7 @@ body #app .track .inner .player .player-piece::-moz-color-swatch {
 }
 body #app .track .inner .player .player-track {
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   height: 100%;
@@ -536,35 +550,30 @@ body #app .track .inner .player .player-track span {
   justify-content: center;
   align-items: center;
   font-size: 0.8em;
+  text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.5);
 }
 @media screen and (min-width: 768px) {
   body #app .track .inner .player .player-track span {
     font-size: 1em;
   }
 }
-body #app .track .inner .player .player-track.show-all-increments > span {
+body #app .track .inner .player .player-track.show-all-increments {
+  --number-of-segments: 1;
+}
+body #app .track .inner .player .player-track.show-all-increments > span:not(:last-of-type) {
   z-index: 0;
 }
-body #app .track .inner .player .player-track.show-all-increments > span:before {
-  position: absolute;
-  top: -1.2em;
-  right: -0.5em;
-  bottom: -1.2em;
-  left: -0.5em;
-  content: "";
-  background-color: var(--theme-color-track-bg);
-  z-index: -1;
-}
-body #app .track .inner .player .player-track.show-all-increments:before {
-  position: absolute;
+body #app .track .inner .player .player-track.show-all-increments > span:not(:last-of-type):before {
   display: block;
   content: "";
+  position: absolute;
   top: 0;
-  bottom: 0;
-  left: 0;
+  left: 50%;
   width: 1px;
+  height: calc(50cqh / var(--number-of-segments));
   background-color: black;
-  opacity: 0.1;
+  opacity: 0.2;
+  transform: translateY(50%);
   z-index: -1;
 }
 body #app .track .inner .player .player-track:not(.show-all-increments) span:nth-of-type(even) {
@@ -592,6 +601,7 @@ body #app .track .game-actions {
   flex-direction: column;
   justify-content: space-between;
   gap: 2px;
+  background-color: var(--theme-color-track-bg);
   z-index: 1;
 }
 body #app .track .game-actions.action-reset {
@@ -610,7 +620,7 @@ body #app .track .game-actions button {
   font-weight: 700;
   text-transform: uppercase;
   color: var(--theme-color-text);
-  background-color: var(--theme-color-track-bg);
+  background-color: transparent;
   border: 0;
   cursor: pointer;
   touch-action: manipulation;
@@ -750,6 +760,8 @@ body #app .overlay .modal .modal-inner .modal-header button.close:hover, body #a
   opacity: 0.5;
 }
 body #app .overlay .modal .modal-inner .modal-body {
+  display: grid;
+  gap: 1.5em;
   width: 100%;
   padding: 0 1.5em;
   font-weight: 400;
@@ -760,32 +772,17 @@ body #app .overlay .modal .modal-inner .modal-body {
     padding: 0 2em;
   }
 }
-body #app .overlay .modal .modal-inner .modal-body input[type=number] {
-  display: none;
-}
-body #app .overlay .modal .modal-inner .modal-body .players {
-  display: grid;
-  gap: 1.5em;
-}
-body #app .overlay .modal .modal-inner .modal-body .players .player {
-  display: grid;
-  grid-template-columns: 1fr 50px;
-  gap: 1em;
-}
-body #app .overlay .modal .modal-inner .modal-body .players .player.more-than-2-players {
-  grid-template-columns: 1fr 50px 25px;
-}
-body #app .overlay .modal .modal-inner .modal-body .players .player .form-group {
+body #app .overlay .modal .modal-inner .modal-body .form-group {
   display: grid;
   gap: 0.25em;
 }
-body #app .overlay .modal .modal-inner .modal-body .players .player .form-group label {
+body #app .overlay .modal .modal-inner .modal-body .form-group label {
   font-size: 0.8em;
   text-transform: uppercase;
   font-weight: 600;
   color: var(--color-grey-800);
 }
-body #app .overlay .modal .modal-inner .modal-body .players .player .form-group.name input {
+body #app .overlay .modal .modal-inner .modal-body .form-group.name input, body #app .overlay .modal .modal-inner .modal-body .form-group.score-max input {
   height: 40px;
   padding: 0 0.75em;
   font-size: 1em;
@@ -796,21 +793,21 @@ body #app .overlay .modal .modal-inner .modal-body .players .player .form-group.
   border: 2px solid var(--color-grey-300);
   border-radius: 4px;
 }
-body #app .overlay .modal .modal-inner .modal-body .players .player .form-group.name input::placeholder {
+body #app .overlay .modal .modal-inner .modal-body .form-group.name input::placeholder, body #app .overlay .modal .modal-inner .modal-body .form-group.score-max input::placeholder {
   color: var(--color-grey-500);
   opacity: 0.5;
 }
-body #app .overlay .modal .modal-inner .modal-body .players .player .form-group.color {
+body #app .overlay .modal .modal-inner .modal-body .form-group.color {
   position: relative;
   --swatch-width: 40px;
 }
-body #app .overlay .modal .modal-inner .modal-body .players .player .form-group.color input {
+body #app .overlay .modal .modal-inner .modal-body .form-group.color input {
   width: var(--swatch-width);
   height: var(--swatch-width);
   cursor: pointer;
   opacity: 0;
 }
-body #app .overlay .modal .modal-inner .modal-body .players .player .form-group.color::before {
+body #app .overlay .modal .modal-inner .modal-body .form-group.color::before {
   display: block;
   content: "";
   position: absolute;
@@ -823,10 +820,10 @@ body #app .overlay .modal .modal-inner .modal-body .players .player .form-group.
   border-radius: 50%;
   box-shadow: inset -2px -2px 0px rgba(0, 0, 0, 0.35), inset 2px 2px 0px rgba(255, 255, 255, 0.45);
 }
-body #app .overlay .modal .modal-inner .modal-body .players .player .form-group.action {
+body #app .overlay .modal .modal-inner .modal-body .form-group.action {
   flex: 0;
 }
-body #app .overlay .modal .modal-inner .modal-body .players .player .form-group.action button.remove-player {
+body #app .overlay .modal .modal-inner .modal-body .form-group.action button.remove-player {
   -webkit-appearance: none;
   appearance: none;
   display: flex;
@@ -846,8 +843,23 @@ body #app .overlay .modal .modal-inner .modal-body .players .player .form-group.
   cursor: pointer;
   transition: all var(--transition) ease-out;
 }
-body #app .overlay .modal .modal-inner .modal-body .players .player .form-group.action button.remove-player:hover, body #app .overlay .modal .modal-inner .modal-body .players .player .form-group.action button.remove-player:focus, body #app .overlay .modal .modal-inner .modal-body .players .player .form-group.action button.remove-player:active {
+body #app .overlay .modal .modal-inner .modal-body .form-group.action button.remove-player:hover, body #app .overlay .modal .modal-inner .modal-body .form-group.action button.remove-player:focus, body #app .overlay .modal .modal-inner .modal-body .form-group.action button.remove-player:active {
   opacity: 0.5;
+}
+body #app .overlay .modal .modal-inner .modal-body .score-max input {
+  width: 6em;
+}
+body #app .overlay .modal .modal-inner .modal-body .players {
+  display: grid;
+  gap: 1.5em;
+}
+body #app .overlay .modal .modal-inner .modal-body .players .player {
+  display: grid;
+  grid-template-columns: 1fr 50px;
+  gap: 1em;
+}
+body #app .overlay .modal .modal-inner .modal-body .players .player.more-than-2-players {
+  grid-template-columns: 1fr 50px 25px;
 }
 body #app .overlay .modal .modal-inner .modal-body .players button.add-player {
   display: flex;
@@ -888,7 +900,7 @@ body #app .overlay .modal .modal-inner .modal-footer button {
   align-items: center;
   -webkit-appearance: none;
   appearance: none;
-  padding: 1.2em 1.5em;
+  padding: 1.5em;
   font-size: 0.8em;
   font-weight: 700;
   line-height: 1;
