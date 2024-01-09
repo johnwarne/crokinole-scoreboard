@@ -17,12 +17,12 @@
     <meta name="application-name" content="Crokinole Scoreboard">
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="theme-color" content="#ffffff">
-    <link rel="stylesheet" id="crokinole-scoreboard-style-css" href="style.css?v=1704816055" type="text/css" media="all">
+    <link rel="stylesheet" id="crokinole-scoreboard-style-css" href="style.css?v=1704819505" type="text/css" media="all">
   </head>
 
   <body>
 
-    <main id="app" :style="`--number-of-players: ` + players.length + `; --bg-color: ` + bg_color + `;`">
+    <main id="app" :style="`--number-of-players: ` + players.length + `; --bg-color: ` + bg_color + `;`" v-cloak>
 
       <div class="players">
         <div v-for="(player, index) in players" class="player" :class="{ 'didnt-win' : winner && player != winner}" :style="`--player-color: ` + player.color + `; --player-text-color: ` + setPlayerTextColor(player) + `;`">
@@ -122,7 +122,7 @@
     <!-- <script src="vue.min.js?v=2.7.16"></script> -->
     <script src="vue.js?v=2.7.16"></script>
     <script src="confetti.browser.min.js?v=1.9.2"></script>
-    <script type="text/javascript" src="script.js?v=1704816055"></script>
+    <script type="text/javascript" src="script.js?v=1704819505"></script>
 
   </body>
 
