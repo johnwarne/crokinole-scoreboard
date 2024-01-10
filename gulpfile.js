@@ -4,9 +4,9 @@ const browserSync = require('browser-sync').create();
 
 // Sass task to compile style.original.scss to style.css
 gulp.task('sass', function() {
-  return gulp.src('css/style.scss')
+  return gulp.src('scoreboard/css/style.scss')
     .pipe(sass().on('error', sass.logError))
-    .pipe(gulp.dest('css'))
+    .pipe(gulp.dest('scoreboard/css'))
     .pipe(browserSync.stream());
 });
 
