@@ -176,6 +176,9 @@ body {
 		margin: 0 auto;
 		color: var(--theme-color-text);
 		background-color: var(--bg-color);
+		@media screen and (max-height: 540px) {
+			width: 100%;
+		}
 		@media screen and (min-width: 768px) {
 			width: clamp(300px, 90vw, 800px);
 		}
@@ -193,6 +196,7 @@ body {
 			touch-input: manipulation;
 			@media screen and (max-height: 540px) {
 				width: 100%;
+				flex-direction: row;
 			}
 			@media screen and (min-width: 768px) {
 				flex-grow: 1;
@@ -211,6 +215,14 @@ body {
 				flex: 1;
 				z-index: 0;
 				touch-action: manipulation;
+				@media screen and (max-height: 540px) {
+					overflow: hidden;
+				}
+				&:first-of-type {
+					@media screen and (min-height: 541px) {
+						flex: 0 0 calc((100% / var(--number-of-players)) + (env(safe-area-inset-top) / 2)); // Prevents the first player's name from being cut off on iOS
+					}
+				}
 				&:before {
 					position: absolute;
 					display: block;
@@ -246,12 +258,14 @@ body {
 						}
 					}
 					&.player-name {
-						flex: 0 0 30%;
+						position: relative;
+						z-index: 2;
+						flex: 1;
 						display: flex;
 						align-items: flex-end;
 						input {
-							margin-block-end: 5cqb;
-							font-size: clamp(1.1em, 20cqb, 20cqb);
+							margin-block-end: 7cqb;
+							font-size: clamp(1.1em, 20cqb, 15cqi);
 							line-height: 1;
 							text-transform: uppercase;
 							&::placeholder {
@@ -261,14 +275,18 @@ body {
 						}
 					}
 					&.player-score {
+						position: relative;
+						z-index: 1;
 						display: flex;
-						flex: 1;
+						flex: 0 0 clamp(60px, 50cqi, 40cqb);
 						justify-content: center;
 						align-items: center;
+						container-type: size;
 						input {
 							-moz-appearance: textfield;
 							appearance: textfield;
-							font-size: clamp(1em, 100cqb, 50cqi);
+							padding: 0;
+							font-size: 100cqb;
 							line-height: 1;
 							&::-webkit-outer-spin-button,
 							&::-webkit-inner-spin-button {
@@ -283,8 +301,10 @@ body {
 						}
 					}
 					&.increment-decrement {
+						position: relative;
+						z-index: 2;
 						display: flex;
-						flex: 0 0 30%;
+						flex: 1;
 						justify-content: center;
 						align-items: stretch;
 						button.increment,
@@ -296,12 +316,12 @@ body {
 							-webkit-appearance: none;
 							appearance: none;
 							width: 1em;
-							padding: 15cqb 0 50cqb;
+							padding: 0 0 50cqb;
 							color: var(--player-text-color);
 							background-color: transparent;
 							border: 0;
-							font-size: 50cqb;
-							line-height: 0;
+							font-size: clamp(2.5em, 50cqb, 4em);
+							line-height: 0.6;
 							text-align: center;
 							cursor: pointer;
 							-webkit-tap-highlight-color: transparent;
@@ -313,11 +333,11 @@ body {
 						}
 						button.decrement {
 							justify-content: flex-end;
-							padding-inline-end: min(45cqb, 20cqw);
+							padding-inline-end: min(25cqb, 10cqi);
 						}
 						button.increment {
 							justify-content: flex-start;
-							padding-inline-start: min(45cqb, 20cqw);
+							padding-inline-start: min(25cqb, 10cqi);
 						}
 					}
 				}
@@ -328,9 +348,6 @@ body {
 						}
 					}
 				}
-				&:first-of-type .form-group.player-name {
-					flex: 0 0 calc(30% + env(safe-area-inset-top) / 6); // Prevents the first player's name from being cut off on iOS
-				}
 			}
 		}
 
@@ -338,7 +355,6 @@ body {
 		.track {
 			position: relative;
 			display: grid;
-			grid-template-rows: auto 1fr auto;
 			gap: 2px;
 			width: calc(4em + 2.5em * var(--number-of-players));
 			padding-block-start: max(5%, calc(env(safe-area-inset-top) + 5%));
@@ -348,23 +364,35 @@ body {
 			-webkit-user-select: none;
 			user-select: none;
 			@media screen and (max-height: 540px) {
-				display: none;
+				position: fixed;
+				bottom: 0;
+				right: 0;
+				left: 0;
+				grid-template-columns: 1fr 1fr;
+				height: 3em;
+				width: 100vw;
+				padding: 0;
 			}
-			@media screen and (min-width: 768px) {
+			@media screen and (min-height: 541px) {
+				grid-template-rows: auto 1fr auto;
+			}
+			@media screen and (min-width: 768px) and (min-height: 541px) {
 				width: max(240px, calc(10% * var(--number-of-players)));
 			}
 			@media screen and (min-width: 768px) and (min-height: 786px) {
 				padding-block-start: max(7%, calc(env(safe-area-inset-top) + 7%));
 				padding-block-end: max(7%, calc(env(safe-area-inset-bottom) + 7%));
 			}
-			@media screen and (min-width: 1200px) {
+			@media screen and (min-width: 1200px) and (min-height: 541px) {
 				width: max(320px, calc(12% * var(--number-of-players)));
 			}
 			* {
 				touch-action: manipulation;
 			}
 			> * {
-				box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1), 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1), 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+				@media screen and (min-height: 541px) {
+					box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1), 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1), 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+				}
 			}
 			.track-bg {
 				position: absolute;
@@ -375,7 +403,7 @@ body {
 				bottom: 0;
 				left: 0;
 				background-image: url(../img/wood-grain.svg);
-				background-size-y: 100vh;
+				background-size: 150% 100vh;
 				background-position: center;
 				opacity: 0.2;
 				z-index: -1;
@@ -388,6 +416,9 @@ body {
 				padding: 2.3em 1em;
 				background-color: var(--theme-color-track-bg);
 				z-index: 1;
+				@media screen and (max-height: 540px) {
+					display: none;
+				}
 				@media screen and (min-width: 768px) and (min-height: 786px) {
 					padding: 3.5em 1em;
 				}
@@ -410,6 +441,7 @@ body {
 						opacity: 0;
 						cursor: pointer;
 						-webkit-tap-highlight-color: transparent;
+						-moz-tap-highlight-color: transparent;
 						touch-action: manipulation;
 						z-index: 3;
 					}
@@ -515,6 +547,7 @@ body {
 				gap: 2px;
 				background-color: var(--theme-color-track-bg);
 				z-index: 1;
+				&.action-settings {}
 				&.action-reset {
 					z-index: 2;
 				}
@@ -541,7 +574,7 @@ body {
 						font-size: 0.9em;
 					}
 					&[disabled] {
-						cursor: not-allowed;
+						cursor: default;
 					}
 					&:not(:disabled):hover,
 					&:not(:disabled):focus {

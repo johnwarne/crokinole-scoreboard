@@ -252,6 +252,11 @@ body #app {
   /* Game track */
   /* Modal */
 }
+@media screen and (max-height: 540px) {
+  body #app {
+    width: 100%;
+  }
+}
 @media screen and (min-width: 768px) {
   body #app {
     width: clamp(300px, 90vw, 800px);
@@ -271,6 +276,7 @@ body #app > .players {
 @media screen and (max-height: 540px) {
   body #app > .players {
     width: 100%;
+    flex-direction: row;
   }
 }
 @media screen and (min-width: 768px) {
@@ -292,6 +298,16 @@ body #app > .players .player {
   flex: 1;
   z-index: 0;
   touch-action: manipulation;
+}
+@media screen and (max-height: 540px) {
+  body #app > .players .player {
+    overflow: hidden;
+  }
+}
+@media screen and (min-height: 541px) {
+  body #app > .players .player:first-of-type {
+    flex: 0 0 calc(100% / var(--number-of-players) + env(safe-area-inset-top) / 2);
+  }
 }
 body #app > .players .player:before {
   position: absolute;
@@ -329,13 +345,15 @@ body #app > .players .player .form-group input:focus {
   outline: none;
 }
 body #app > .players .player .form-group.player-name {
-  flex: 0 0 30%;
+  position: relative;
+  z-index: 2;
+  flex: 1;
   display: flex;
   align-items: flex-end;
 }
 body #app > .players .player .form-group.player-name input {
-  margin-block-end: 5cqb;
-  font-size: clamp(1.1em, 20cqb, 20cqb);
+  margin-block-end: 7cqb;
+  font-size: clamp(1.1em, 20cqb, 15cqi);
   line-height: 1;
   text-transform: uppercase;
 }
@@ -344,15 +362,19 @@ body #app > .players .player .form-group.player-name input::placeholder {
   opacity: 0.5;
 }
 body #app > .players .player .form-group.player-score {
+  position: relative;
+  z-index: 1;
   display: flex;
-  flex: 1;
+  flex: 0 0 clamp(60px, 50cqi, 40cqb);
   justify-content: center;
   align-items: center;
+  container-type: size;
 }
 body #app > .players .player .form-group.player-score input {
   -moz-appearance: textfield;
   appearance: textfield;
-  font-size: clamp(1em, 100cqb, 50cqi);
+  padding: 0;
+  font-size: 100cqb;
   line-height: 1;
 }
 body #app > .players .player .form-group.player-score input::-webkit-outer-spin-button, body #app > .players .player .form-group.player-score input::-webkit-inner-spin-button {
@@ -365,8 +387,10 @@ body #app > .players .player .form-group.player-score input:disabled {
   touch-action: manipulation;
 }
 body #app > .players .player .form-group.increment-decrement {
+  position: relative;
+  z-index: 2;
   display: flex;
-  flex: 0 0 30%;
+  flex: 1;
   justify-content: center;
   align-items: stretch;
 }
@@ -379,12 +403,12 @@ body #app > .players .player .form-group.increment-decrement button.decrement {
   -webkit-appearance: none;
   appearance: none;
   width: 1em;
-  padding: 15cqb 0 50cqb;
+  padding: 0 0 50cqb;
   color: var(--player-text-color);
   background-color: transparent;
   border: 0;
-  font-size: 50cqb;
-  line-height: 0;
+  font-size: clamp(2.5em, 50cqb, 4em);
+  line-height: 0.6;
   text-align: center;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
@@ -397,22 +421,18 @@ body #app > .players .player .form-group.increment-decrement button.decrement.di
 }
 body #app > .players .player .form-group.increment-decrement button.decrement {
   justify-content: flex-end;
-  padding-inline-end: min(45cqb, 20cqw);
+  padding-inline-end: min(25cqb, 10cqi);
 }
 body #app > .players .player .form-group.increment-decrement button.increment {
   justify-content: flex-start;
-  padding-inline-start: min(45cqb, 20cqw);
+  padding-inline-start: min(25cqb, 10cqi);
 }
 body #app > .players .player.didnt-win .form-group.player-name input {
   opacity: 0.25;
 }
-body #app > .players .player:first-of-type .form-group.player-name {
-  flex: 0 0 calc(30% + env(safe-area-inset-top) / 6);
-}
 body #app .track {
   position: relative;
   display: grid;
-  grid-template-rows: auto 1fr auto;
   gap: 2px;
   width: calc(4em + 2.5em * var(--number-of-players));
   padding-block-start: max(5%, env(safe-area-inset-top) + 5%);
@@ -424,10 +444,22 @@ body #app .track {
 }
 @media screen and (max-height: 540px) {
   body #app .track {
-    display: none;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    grid-template-columns: 1fr 1fr;
+    height: 3em;
+    width: 100vw;
+    padding: 0;
   }
 }
-@media screen and (min-width: 768px) {
+@media screen and (min-height: 541px) {
+  body #app .track {
+    grid-template-rows: auto 1fr auto;
+  }
+}
+@media screen and (min-width: 768px) and (min-height: 541px) {
   body #app .track {
     width: max(240px, 10% * var(--number-of-players));
   }
@@ -438,7 +470,7 @@ body #app .track {
     padding-block-end: max(7%, env(safe-area-inset-bottom) + 7%);
   }
 }
-@media screen and (min-width: 1200px) {
+@media screen and (min-width: 1200px) and (min-height: 541px) {
   body #app .track {
     width: max(320px, 12% * var(--number-of-players));
   }
@@ -446,8 +478,10 @@ body #app .track {
 body #app .track * {
   touch-action: manipulation;
 }
-body #app .track > * {
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1), 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+@media screen and (min-height: 541px) {
+  body #app .track > * {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1), 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1), 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+  }
 }
 body #app .track .track-bg {
   position: absolute;
@@ -458,7 +492,7 @@ body #app .track .track-bg {
   bottom: 0;
   left: 0;
   background-image: url(../img/wood-grain.svg);
-  background-size-y: 100vh;
+  background-size: 150% 100vh;
   background-position: center;
   opacity: 0.2;
   z-index: -1;
@@ -471,6 +505,11 @@ body #app .track .inner {
   padding: 2.3em 1em;
   background-color: var(--theme-color-track-bg);
   z-index: 1;
+}
+@media screen and (max-height: 540px) {
+  body #app .track .inner {
+    display: none;
+  }
 }
 @media screen and (min-width: 768px) and (min-height: 786px) {
   body #app .track .inner {
@@ -497,6 +536,7 @@ body #app .track .inner .player .player-piece-range {
   opacity: 0;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
+  -moz-tap-highlight-color: transparent;
   touch-action: manipulation;
   z-index: 3;
 }
@@ -636,7 +676,7 @@ body #app .track .game-actions button {
   }
 }
 body #app .track .game-actions button[disabled] {
-  cursor: not-allowed;
+  cursor: default;
 }
 body #app .track .game-actions button:not(:disabled):hover, body #app .track .game-actions button:not(:disabled):focus {
   color: white;
