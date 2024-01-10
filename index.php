@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="initial-scale=1, viewport-fit=cover, width=device-width">
+    <title>Crokinole Scoreboard</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <link rel="canonical" href="https://www.crokinole.fun/">
+    <link rel="shortlink" href="https://www.crokinole.fun/">
+    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
+    <link rel="manifest" href="favicon/site.webmanifest">
+    <link rel="mask-icon" href="favicon/safari-pinned-tab.svg" color="#d23824">
+    <meta name="apple-mobile-web-app-title" content="Crokinole Scoreboard">
+    <meta name="application-name" content="Crokinole Scoreboard">
+    <meta name="msapplication-TileColor" content="#cebaa6">
+    <meta name="theme-color" content="#cebaa6">
+    <link rel="stylesheet" id="crokinole-scoreboard-style-css" href="css/style.css?v=<?php echo filemtime('css/style.css'); ?>" type="text/css" media="all">
+  </head>
+
+  <body>
+
+    <main id="app" :style="`--number-of-players: ` + players.length + `; --bg-color: ` + bg_color + `;`" v-cloak>
+
+      <div class="players">
+        <div v-for="(player, index) in players" class="player" :class="{ 'didnt-win' : winner && player != winner}" :style="`--player-color: ` + player.color + `; --player-text-color: ` + setPlayerTextColor(player) + `;`">
+          <div class="form-group player-name">
+            <label :for="`player-` + index + `-name`" class="sr-only">Player {{ index }} name</label>
+            <input type="text" :name="`player-` + index + `-name`" :id="`player-` + index + `-name`" class="player-name" v-model="player.name" placeholder="Name" @focus="selectAll($event)" @blur="nameCheck">
+          </div>
+          <div class="form-group player-score">
+            <label :for="`player-` + index + `-score`" class="sr-only">Player {{ index }} score</label>
+            <input type="number" :name="`player-` + index + `-score`" :id="`player-` + index + `-score`" :min="score.min" :max="score.max" :step="score.increment" class="score" v-model="player.score" placeholder="0" pattern="[0-9]{1,3}" inputmode="numeric" :size="player.score.length" :disabled="winner && player != winner" @focus="selectAll($event)" @blur="scoreCheck">
+          </div>
+          <div class="form-group increment-decrement">
+            <button type="button" class="decrement" :class="{ disabled : (winner && player != winner) || (player.score === score.min)}" @click="decrementScore(player, $event)">-</button>
+            <button type="button" class="increment" :class="{ disabled : (winner && player != winner) || (player.score === score.max)}" @click="incrementScore(player, $event)">+</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="track">
+
+        <div class="game-actions action-settings">
+          <div class="track-bg"></div>
+          <button type="button" class="settings" @click="openSettingsModal" alt="Settings">
+            <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M18 12h-2.18c-.17.7-.44 1.35-.81 1.93l1.54 1.54l-2.1 2.1l-1.54-1.54c-.58.36-1.23.63-1.91.79V19H8v-2.18c-.68-.16-1.33-.43-1.91-.79l-1.54 1.54l-2.12-2.12l1.54-1.54c-.36-.58-.63-1.23-.79-1.91H1V9.03h2.17c.16-.7.44-1.35.8-1.94L2.43 5.55l2.1-2.1l1.54 1.54c.58-.37 1.24-.64 1.93-.81V2h3v2.18c.68.16 1.33.43 1.91.79l1.54-1.54l2.12 2.12l-1.54 1.54c.36.59.64 1.24.8 1.94H18zm-8.5 1.5c1.66 0 3-1.34 3-3s-1.34-3-3-3s-3 1.34-3 3s1.34 3 3 3"/></svg>
+            <span>Settings</span>
+          </button>
+        </div>
+
+        <div class="inner">
+          <div class="track-bg"></div>
+          <div v-for="(player, index) in players" class="player">
+            <label :for="`player-` + (index + 1) + `-color`" class="sr-only">Player {{ index + 1 }} color</label>
+            <div class="player-piece" :name="`player-` + (index + 1) + `-color`" :id="`player-` + (index + 1) + `-color`" :style="`--player-color: ` + player.color + `; --player-score: ` + player.score / score.max" list="colors"></div>
+            <div class="player-track" :class="{ 'show-all-increments' : ((score.max - score.min) / score.increment) <= 10 }" :style="`--number-of-segments: ` + ((score.max - score.min) / score.increment)">
+              <span>{{ score.max }}</span>
+              <template v-for="index in ((score.max - score.min) / score.increment)">
+                <span>{{ score.max - (index * score.increment) }}</span>
+              </template>
+            </div>
+            <input type="range" class="player-piece-range" :style="`--player-color: ` + player.color + `;`" v-model="player.score" :min="score.min" :max="score.max" :step="score.increment" :disabled="winner && player != winner"></input>
+          </div>
+        </div>
+
+        <div class="game-actions action-reset">
+          <div class="track-bg"></div>
+          <button :disabled="!game_is_underway" type="button" class="reset" @click="resetScore" alt="Reset Score">
+            <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M12 5H7V2L1 6l6 4V7h5c2.2 0 4 1.8 4 4s-1.8 4-4 4H7v2h5c3.3 0 6-2.7 6-6s-2.7-6-6-6" class="st0"/></svg>
+            <span v-if="game_is_underway">Reset score</span>
+            <span v-else>Good luck!</span>
+          </button>
+        </div>
+
+      </div>
+
+      <div class="overlay" :class="{active: modal.visible}" @click="closeModal($event)">
+
+        <div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="dialog_label" aria-describedby="dialog_desc">
+          <div class="modal-inner">
+            <div class="modal-header">
+              <h2>
+                <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M18 12h-2.18c-.17.7-.44 1.35-.81 1.93l1.54 1.54l-2.1 2.1l-1.54-1.54c-.58.36-1.23.63-1.91.79V19H8v-2.18c-.68-.16-1.33-.43-1.91-.79l-1.54 1.54l-2.12-2.12l1.54-1.54c-.36-.58-.63-1.23-.79-1.91H1V9.03h2.17c.16-.7.44-1.35.8-1.94L2.43 5.55l2.1-2.1l1.54 1.54c.58-.37 1.24-.64 1.93-.81V2h3v2.18c.68.16 1.33.43 1.91.79l1.54-1.54l2.12 2.12l-1.54 1.54c.36.59.64 1.24.8 1.94H18zm-8.5 1.5c1.66 0 3-1.34 3-3s-1.34-3-3-3s-3 1.34-3 3s1.34 3 3 3"/></svg>
+                <span>Settings</span>
+              </h2>
+              <button type="button" class="close" @click="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+              <p v-if="modal.message" v-html="modal.message"></p>
+              <div class="form-group score-max">
+                <label for="score-max">Maximum score</label>
+                <input type="number" name="score-max" id="score-max" :step="score.increment" class="score" v-model="score.max" placeholder="100" pattern="[0-9]{1,3}" inputmode="numeric" @blur="scoreMaxCheck">
+              </div>
+              <div class="players">
+                <div v-for="(player, index) in players" class="player" :class="[`player-` + (index + 1 ), { 'more-than-2-players' : players.length > 2 }]" :style="`--player-color: ` + player.color + `; --player-text-color: ` + setPlayerTextColor(player) + `;`">
+                  <div class="form-group name">
+                    <label :for="`player-` + (index + 1) + `-name`">Name</label>
+                    <input type="text" :name="`player-` + (index + 1) + `-name`" :id="`player-` + (index + 1) + `-name`" class="player-name" v-model="player.name" placeholder="Name" @focus="selectAll($event)" @blur="nameCheck">
+                  </div>
+                  <div class="form-group color">
+                    <label :for="`player-` + (index + 1) + `-color`">Color</label>
+                    <input type="color" :name="`player-` + (index + 1) + `-color`" :id="`player-` + (index + 1) + `-color`" class="player-color" list="colors" v-model="player.color">
+                    <datalist id="colors">
+                      <option v-for="color in colors">{{ color }}</option>
+                    </datalist>
+                  </div>
+                  <div class="form-group action" v-if="index > 1">
+                    <button class="remove-player" @click="removePlayer(index)">&times;</button>
+                  </div>
+                </div>
+                <button v-if="players.length < 4" class="btn add-player" @click="addPlayer">+ Add player</button>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger close" @click="resetData">Reset game</button>
+              <button type="button" class="btn close" @click="closeModal($event)">Close</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- <script src="vue.min.js?v=2.7.16"></script> -->
+    <script src="js/vue.js?v=2.7.16"></script>
+    <script src="js/confetti.browser.min.js?v=1.9.2"></script>
+    <script type="text/javascript" src="js/script.js?v=<?php echo filemtime('js/script.js'); ?>"></script>
+
+  </body>
+
+</html>
