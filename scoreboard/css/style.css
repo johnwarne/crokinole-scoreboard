@@ -729,6 +729,11 @@ body #app .overlay .modal {
   transform: translateY(10%);
   transition: transform 0.3s ease-out;
 }
+@media screen and (max-height: 540px) {
+  body #app .overlay .modal {
+    width: clamp(300px, 90%, 600px);
+  }
+}
 body #app .overlay .modal.active {
   transform: translateY(0);
 }
@@ -753,6 +758,11 @@ body #app .overlay .modal .modal-inner .modal-header {
   padding: 1em;
   border-bottom: 1px solid var(--color-grey-200);
   box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+}
+@media screen and (max-height: 540px) {
+  body #app .overlay .modal .modal-inner .modal-header {
+    display: none;
+  }
 }
 @media screen and (min-width: 768px) {
   body #app .overlay .modal .modal-inner .modal-header {
@@ -811,6 +821,14 @@ body #app .overlay .modal .modal-inner .modal-body {
   font-weight: 400;
   color: var(--color-grey-800);
 }
+@media screen and (max-height: 540px) {
+  body #app .overlay .modal .modal-inner .modal-body {
+    display: grid;
+    gap: 2em;
+    grid-template-columns: auto 1fr;
+    padding-top: 2em;
+  }
+}
 @media screen and (min-width: 768px) {
   body #app .overlay .modal .modal-inner .modal-body {
     padding: 0 2em;
@@ -840,6 +858,11 @@ body #app .overlay .modal .modal-inner .modal-body .form-group.name input, body 
 body #app .overlay .modal .modal-inner .modal-body .form-group.name input::placeholder, body #app .overlay .modal .modal-inner .modal-body .form-group.score-max input::placeholder {
   color: var(--color-grey-500);
   opacity: 0.5;
+}
+@media screen and (max-height: 540px) {
+  body #app .overlay .modal .modal-inner .modal-body .form-group.score-max {
+    grid-template-rows: auto 1fr;
+  }
 }
 body #app .overlay .modal .modal-inner .modal-body .form-group.color {
   position: relative;
@@ -896,6 +919,11 @@ body #app .overlay .modal .modal-inner .modal-body .score-max input {
 body #app .overlay .modal .modal-inner .modal-body .players {
   display: grid;
   gap: 1.5em;
+}
+@media screen and (max-height: 540px) {
+  body #app .overlay .modal .modal-inner .modal-body .players {
+    gap: 1em;
+  }
 }
 body #app .overlay .modal .modal-inner .modal-body .players .player {
   display: grid;

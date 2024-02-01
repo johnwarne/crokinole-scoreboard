@@ -634,6 +634,9 @@ body {
 				box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
 				transform: translateY(10%);
 				transition: transform 0.3s ease-out;
+				@media screen and (max-height: 540px) {
+					width: clamp(300px, 90%, 600px);
+				}
 				&.active {
 					transform: translateY(0);
 				}
@@ -653,6 +656,9 @@ body {
 						padding: 1em;
 						border-bottom: 1px solid var(--color-grey-200);
 						box-shadow: 0 2px 4px -1px rgb(0 0 0 / 0.1);
+						@media screen and (max-height: 540px) {
+							display: none;
+						}
 						@media screen and (min-width: 768px) {
 							padding: 1.3em;
 						}
@@ -708,6 +714,12 @@ body {
 						padding: 0 1.5em;
 						font-weight: 400;
 						color: var(--color-grey-800);
+						@media screen and (max-height: 540px) {
+							display: grid;
+							gap: 2em;
+							grid-template-columns: auto 1fr;
+							padding-top: 2em;
+						}
 						@media screen and (min-width: 768px) {
 							padding: 0 2em;
 						}
@@ -736,6 +748,11 @@ body {
 										color: var(--color-grey-500);
 										opacity: 0.5;
 									}
+								}
+							}
+							&.score-max {
+								@media screen and (max-height: 540px) {
+									grid-template-rows: auto 1fr;
 								}
 							}
 							&.color {
@@ -798,6 +815,9 @@ body {
 						.players {
 							display: grid;
 							gap: 1.5em;
+							@media screen and (max-height: 540px) {
+								gap: 1em;
+							}
 							.player {
 								display: grid;
 								grid-template-columns: 1fr 50px;
