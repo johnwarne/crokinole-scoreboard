@@ -18,7 +18,7 @@
     <meta name="application-name" content="Crokinole Scoreboard">
     <meta name="msapplication-TileColor" content="#cebaa6">
     <meta name="theme-color" content="#cebaa6">
-    <link rel="stylesheet" id="crokinole-scoreboard-style-css" href="css/style.css?v=1706812170" type="text/css" media="all">
+    <link rel="stylesheet" id="crokinole-scoreboard-style-css" href="css/style.css?v=1706830173" type="text/css" media="all">
     <link rel="preload" fetchpriority="high" as="image" href="img/wood-grain.svg" type="image/svg+xml">
   </head>
 
@@ -84,21 +84,21 @@
 
         <div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="dialog_label" aria-describedby="dialog_desc">
           <div class="modal-inner">
-            <div class="modal-header">
+            <div v-if="modal.show_header" class="modal-header">
               <h2>
                 <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M18 12h-2.18c-.17.7-.44 1.35-.81 1.93l1.54 1.54l-2.1 2.1l-1.54-1.54c-.58.36-1.23.63-1.91.79V19H8v-2.18c-.68-.16-1.33-.43-1.91-.79l-1.54 1.54l-2.12-2.12l1.54-1.54c-.36-.58-.63-1.23-.79-1.91H1V9.03h2.17c.16-.7.44-1.35.8-1.94L2.43 5.55l2.1-2.1l1.54 1.54c.58-.37 1.24-.64 1.93-.81V2h3v2.18c.68.16 1.33.43 1.91.79l1.54-1.54l2.12 2.12l-1.54 1.54c.36.59.64 1.24.8 1.94H18zm-8.5 1.5c1.66 0 3-1.34 3-3s-1.34-3-3-3s-3 1.34-3 3s1.34 3 3 3"/></svg>
-                <span id="dialog_label">Settings</span>
+                <span id="dialog_label">{{ modal.title }}</span>
               </h2>
               <button type="button" class="close" @click="closeModal">&times;</button>
             </div>
             <div class="modal-body">
               <p id="dialog_desc" class="sr-only">Customize your game settings.</p>
-              <p v-if="modal.message" v-html="modal.message"></p>
-              <div class="form-group score-max">
+              <div v-if="modal.message" class="modal-message" v-html="modal.message"></div>
+              <div v-if="modal.show_settings" class="form-group score-max">
                 <label for="score-max">Maximum score</label>
                 <input type="number" name="score-max" id="score-max" :step="score.increment" class="score" v-model="score.max" placeholder="100" pattern="[0-9]{1,3}" inputmode="numeric" @blur="scoreMaxCheck">
               </div>
-              <div class="players">
+              <div v-if="modal.show_settings" class="players">
                 <div v-for="(player, index) in players" class="player" :class="[`player-` + (index + 1 ), { 'more-than-2-players' : players.length > 2 }]" :style="`--player-color: ` + player.color + `; --player-text-color: ` + setPlayerTextColor(player) + `;`">
                   <div class="form-group name">
                     <label :for="`modal-player-` + (index + 1) + `-name`">Name</label>
@@ -119,7 +119,7 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-danger close" @click="resetData">Reset game</button>
+              <button v-if="modal.show_reset" type="button" class="btn btn-danger close" @click="resetData">Reset game</button>
               <button type="button" class="btn close" @click="closeModal($event)">Close</button>
             </div>
           </div>
@@ -132,7 +132,7 @@
     <script src="js/vue.min.js?v=2.7.16"></script>
     <!-- <script src="js/vue.js?v=2.7.16"></script> -->
     <script src="js/confetti.browser.min.js?v=1.9.2"></script>
-    <script type="text/javascript" src="js/script.js?1704900951"></script>
+    <script type="text/javascript" src="js/script.js?1706830173"></script>
 
   </body>
 

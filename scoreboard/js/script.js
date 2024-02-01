@@ -23,6 +23,9 @@ const app = new Vue({
       visible: false,
       title: '',
       message: '',
+      show_header: true,
+      show_reset: true,
+      show_settings: true,
     },
     colors: [
       '#C1A469', // natural
@@ -196,7 +199,10 @@ const app = new Vue({
         }
       }
     },
-    openModal(title, message) {
+    openModal(show_header = true, show_settings = true, show_reset = true, title = 'Settings', message = '') {
+      this.modal.show_header = show_header;
+      this.modal.show_reset = show_reset;
+      this.modal.show_settings = show_settings;
       this.modal.title = title;
       this.modal.message = message;
       this.modal.visible = true;
@@ -207,7 +213,7 @@ const app = new Vue({
       }
     },
     openSettingsModal() {
-      this.openModal('Game Settings', '');
+      this.openModal(show_header = true, show_settings = true, show_reset = true, title = 'Game Settings', message = '');
     },
     numberOfCharacters(val) {
       return val.length || 1;
@@ -218,7 +224,14 @@ const app = new Vue({
         spread: 70,
         origin: { y: 0.6 }
       });
-    }
+    },
+    isIOS() {
+      const userAgent = window.navigator.userAgent.toLowerCase();
+      return /iphone|ipad|ipod/.test( userAgent );
+    },
+    isInStandaloneMode() {
+      return ('standalone' in window.navigator) && (window.navigator.standalone);
+    },
   },
   watch: {
     players: {
@@ -286,6 +299,10 @@ const app = new Vue({
   },
   mounted() {
     this.loadData();
-    // this.openSettingsModal();
+    // Add to home screen notification on iOS
+    if (this.isIOS() && !this.isInStandaloneMode() && localStorage.getItem('ios_pwa_notification_shown') === null) {
+      this.openModal(show_header = true, show_settings = false, show_reset = false, title = 'Install', message = '<p>To install this web app on your home screen:</p><ol><li>Tap the <span @click="addToHomeScreen">share button <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M18 8h-2c-.55 0-1 .45-1 1s.45 1 1 1h2v11H6V10h2c.55 0 1-.45 1-1s-.45-1-1-1H6c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2"/><path fill="currentColor" d="M12 16c.55 0 1-.45 1-1V5h1.79c.45 0 .67-.54.35-.85l-2.79-2.79c-.2-.2-.51-.2-.71 0L8.85 4.15a.5.5 0 0 0 .36.85H11v10c0 .55.45 1 1 1"/></svg></span></li><li>Tap <strong>Add to Home Screen</strong> <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2m0 16H5V5h14zm-8-2h2v-4h4v-2h-4V7h-2v4H7v2h4z"/></svg></li></ol>');
+      localStorage.setItem('ios_pwa_notification_shown', 'true');
+    }
   }
 });
