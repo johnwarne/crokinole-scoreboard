@@ -277,6 +277,7 @@ body #app > .players {
   body #app > .players {
     width: 100%;
     flex-direction: row;
+    margin-top: 3em;
   }
 }
 @media screen and (min-width: 768px) {
@@ -445,7 +446,7 @@ body #app .track {
 @media screen and (max-height: 540px) {
   body #app .track {
     position: fixed;
-    bottom: 0;
+    top: 0;
     right: 0;
     left: 0;
     grid-template-columns: 1fr 1fr;

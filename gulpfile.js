@@ -13,7 +13,7 @@ gulp.task('sass', function() {
 // Watch task to automatically compile Sass and reload on changes
 gulp.task('watch', function() {
   browserSync.init({
-    proxy: 'https://crokinole.test/',
+    proxy: 'https://crokinole.test/scoreboard/',
     port: 3000,
     open: false,
   });
