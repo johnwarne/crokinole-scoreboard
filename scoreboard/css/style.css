@@ -831,7 +831,7 @@ body #app .overlay .modal .modal-inner .modal-body {
 }
 @media screen and (min-width: 768px) {
   body #app .overlay .modal .modal-inner .modal-body {
-    padding: 0 2em;
+    padding-inline: 2em;
   }
 }
 body #app .overlay .modal .modal-inner .modal-body .form-group {
