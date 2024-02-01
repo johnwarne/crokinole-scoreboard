@@ -97,12 +97,12 @@
               <div class="players">
                 <div v-for="(player, index) in players" class="player" :class="[`player-` + (index + 1 ), { 'more-than-2-players' : players.length > 2 }]" :style="`--player-color: ` + player.color + `; --player-text-color: ` + setPlayerTextColor(player) + `;`">
                   <div class="form-group name">
-                    <label :for="`player-` + (index + 1) + `-name`">Name</label>
-                    <input type="text" :name="`player-` + (index + 1) + `-name`" :id="`player-` + (index + 1) + `-name`" class="player-name" v-model="player.name" placeholder="Name" @focus="selectAll($event)" @blur="nameCheck">
+                    <label :for="`modal-player-` + (index + 1) + `-name`">Name</label>
+                    <input type="text" :name="`modal-player-` + (index + 1) + `-name`" :id="`modal-player-` + (index + 1) + `-name`" class="player-name" v-model="player.name" placeholder="Name" @focus="selectAll($event)" @blur="nameCheck">
                   </div>
                   <div class="form-group color">
-                    <label :for="`player-` + (index + 1) + `-color`">Color</label>
-                    <input type="color" :name="`player-` + (index + 1) + `-color`" :id="`player-` + (index + 1) + `-color`" class="player-color" list="colors" v-model="player.color">
+                    <label :for="`modal-player-` + (index + 1) + `-color`">Color</label>
+                    <input type="color" :name="`modal-player-` + (index + 1) + `-color`" :id="`modal-player-` + (index + 1) + `-color`" class="player-color" list="colors" v-model="player.color" title="Player color">
                     <datalist id="colors">
                       <option v-for="color in colors">{{ color }}</option>
                     </datalist>
