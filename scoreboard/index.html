@@ -56,7 +56,6 @@
         <div class="inner">
           <div class="track-bg"></div>
           <div v-for="(player, index) in players" class="player">
-            <label :for="`player-` + (index + 1) + `-color`" class="sr-only">Player {{ index + 1 }} color</label>
             <div class="player-piece" :name="`player-` + (index + 1) + `-color`" :id="`player-` + (index + 1) + `-color`" :style="`--player-color: ` + player.color + `; --player-score: ` + player.score / score.max" list="colors"></div>
             <div class="player-track" :class="{ 'show-all-increments' : ((score.max - score.min) / score.increment) <= 10 }" :style="`--number-of-segments: ` + ((score.max - score.min) / score.increment)">
               <span>{{ score.max }}</span>
