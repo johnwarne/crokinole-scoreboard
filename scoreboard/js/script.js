@@ -232,6 +232,38 @@ const app = new Vue({
     isInStandaloneMode() {
       return ('standalone' in window.navigator) && (window.navigator.standalone);
     },
+    // Keep screen awake
+    keepScreenAwake() {
+      if ('wakeLock' in navigator) {
+        let wakeLock = null;
+        const wakeLockEnable = async () => {
+          try {
+            wakeLock = await navigator.wakeLock.request('screen');
+            wakeLock.addEventListener('release', () => {
+              console.log('Wake Lock has been released');
+            });
+            console.log('Wake Lock is active!');
+          } catch (err) {
+            console.error(`${err.name}, ${err.message}`);
+          }
+        }
+        wakeLockEnable();
+        const wakeLockDisable = () => {
+          if (wakeLock !== null && wakeLock.released === false) {
+            wakeLock.release();
+            wakeLock = null;
+          }
+        }
+        document.addEventListener('visibilitychange', () => {
+          if (wakeLock !== null && document.visibilityState === 'visible') {
+            wakeLockDisable();
+          }
+        });
+        window.addEventListener('beforeunload', () => {
+          wakeLockDisable();
+        });
+      }
+    },
   },
   watch: {
     players: {
@@ -299,6 +331,7 @@ const app = new Vue({
   },
   mounted() {
     this.loadData();
+    this.keepScreenAwake();
     // Add to home screen notification on iOS
     if (this.isIOS() && !this.isInStandaloneMode() && localStorage.getItem('ios_pwa_notification_shown') === null) {
       this.openModal(show_header = true, show_settings = false, show_reset = false, title = 'Install', message = '<p>To install this web app on your home screen:</p><ol><li>Tap the <span @click="addToHomeScreen">share button <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M18 8h-2c-.55 0-1 .45-1 1s.45 1 1 1h2v11H6V10h2c.55 0 1-.45 1-1s-.45-1-1-1H6c-1.1 0-2 .9-2 2v11c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2"/><path fill="currentColor" d="M12 16c.55 0 1-.45 1-1V5h1.79c.45 0 .67-.54.35-.85l-2.79-2.79c-.2-.2-.51-.2-.71 0L8.85 4.15a.5.5 0 0 0 .36.85H11v10c0 .55.45 1 1 1"/></svg></span></li><li>Tap <strong>Add to Home Screen</strong> <svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2m0 16H5V5h14zm-8-2h2v-4h4v-2h-4V7h-2v4H7v2h4z"/></svg></li></ol>');
