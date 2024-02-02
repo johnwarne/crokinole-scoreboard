@@ -35,6 +35,7 @@ const app = new Vue({
       '#1F3A93', // blue
       '#FFFFFF', // white
     ],
+    wakeLock: null,
   },
   methods: {
     loadData() {
@@ -47,7 +48,6 @@ const app = new Vue({
           this.addPlayer();
         }
       }
-      this.keepScreenAwake();
     },
     saveData() {
       localStorage.setItem('players', JSON.stringify(this.players));
@@ -234,16 +234,43 @@ const app = new Vue({
       return ('standalone' in window.navigator) && (window.navigator.standalone);
     },
     keepScreenAwake() {
+      if(this.wakeLock !== null) return;
       if ('wakeLock' in navigator) {
         let wakeLock = null;
         const wakeLockEnable = async () => {
           try {
             wakeLock = await navigator.wakeLock.request('screen');
+            this.wakeLock = wakeLock;
+            wakeLock.addEventListener('release', () => {});
           } catch (err) {
             console.error(`${err.name}, ${err.message}`);
           }
         }
         wakeLockEnable();
+        const wakeLockDisable = () => {
+          if (wakeLock !== null && wakeLock.released === false) {
+            wakeLock.release();
+            wakeLock = null;
+            this.wakeLock = null;
+            // remove event listeners
+            document.removeEventListener('visibilitychange', () => {
+              if (wakeLock !== null && document.visibilityState === 'visible') {
+                wakeLockDisable();
+              }
+            });
+            window.removeEventListener('beforeunload', () => {
+              wakeLockDisable();
+            });
+          }
+        }
+        document.addEventListener('visibilitychange', () => {
+          if (wakeLock !== null && document.visibilityState === 'visible') {
+            wakeLockDisable();
+          }
+        });
+        window.addEventListener('beforeunload', () => {
+          wakeLockDisable();
+        });
       }
     },
   },

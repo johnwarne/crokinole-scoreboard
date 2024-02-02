@@ -24,7 +24,7 @@
 
   <body>
 
-    <main id="app" :style="`--number-of-players: ` + players.length + `; --bg-color: ` + bg_color + `;`" v-cloak>
+    <main id="app" :style="`--number-of-players: ` + players.length + `; --bg-color: ` + bg_color + `;`" v-cloak @click="keepScreenAwake">
 
       <div class="players">
         <div v-for="(player, index) in players" class="player" :class="{ 'didnt-win' : winner && player != winner}" :style="`--player-color: ` + player.color + `; --player-text-color: ` + setPlayerTextColor(player) + `;`">
