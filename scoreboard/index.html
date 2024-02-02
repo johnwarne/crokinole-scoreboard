@@ -131,30 +131,7 @@
     <script src="js/vue.min.js?v=2.7.16"></script>
     <!-- <script src="js/vue.js?v=2.7.16"></script> -->
     <script src="js/confetti.browser.min.js?v=1.9.2"></script>
-    <script type="text/javascript" src="js/script.js?1706906868"></script>
-    <script>
-    if ('wakeLock' in navigator) {
-      let wakeLock = null;
-      const wakeLockEnable = async () => {
-        try {
-          wakeLock = await navigator.wakeLock.request('screen');
-          wakeLock.addEventListener('release', () => {
-            console.log('Wake Lock has been released');
-          });
-          console.log('Wake Lock is active!');
-        } catch (err) {
-          console.error(`${err.name}, ${err.message}`);
-        }
-      }
-      wakeLockEnable();
-      window.addEventListener('unload', async () => {
-        if (wakeLock !== null) {
-          await wakeLock.release();
-          wakeLock = null;
-        }
-      });
-    }
-    </script>
+    <script type="text/javascript" src="js/script.js?1706908874"></script>
 
   </body>
 
