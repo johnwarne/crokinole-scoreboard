@@ -82,7 +82,7 @@
 
       <div class="overlay" :class="{active: modal.visible}" @click="closeModal($event)">
 
-        <div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="dialog_label" aria-describedby="dialog_desc">
+        <div class="modal" role="alertdialog" aria-modal="true" aria-labelledby="dialog_label">
           <div class="modal-inner">
             <div v-if="modal.show_header" class="modal-header">
               <h2>
@@ -92,7 +92,6 @@
               <button type="button" class="close" @click="closeModal">&times;</button>
             </div>
             <div class="modal-body">
-              <p id="dialog_desc" class="sr-only">Customize your game settings.</p>
               <div v-if="modal.message" class="modal-message" v-html="modal.message"></div>
               <div v-if="modal.show_settings" class="form-group score-max">
                 <label for="score-max">Maximum score</label>
@@ -132,7 +131,7 @@
     <script src="js/vue.min.js?v=2.7.16"></script>
     <!-- <script src="js/vue.js?v=2.7.16"></script> -->
     <script src="js/confetti.browser.min.js?v=1.9.2"></script>
-    <script type="text/javascript" src="js/script.js?1706831511"></script>
+    <script type="text/javascript" src="js/script.js?1706834467"></script>
 
   </body>
 

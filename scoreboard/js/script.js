@@ -22,7 +22,7 @@ const app = new Vue({
     modal: {
       visible: false,
       title: 'Settings',
-      message: 'Adjust the game settings below.',
+      message: '',
       show_header: true,
       show_reset: true,
       show_settings: true,
@@ -213,7 +213,7 @@ const app = new Vue({
       }
     },
     openSettingsModal() {
-      this.openModal(show_header = true, show_settings = true, show_reset = true, title = 'Game Settings', message = 'Adjust the game settings below.');
+      this.openModal(show_header = true, show_settings = true, show_reset = true, title = 'Game Settings', message = '');
     },
     numberOfCharacters(val) {
       return val.length || 1;
