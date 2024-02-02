@@ -247,30 +247,6 @@ const app = new Vue({
           }
         }
         wakeLockEnable();
-        const wakeLockDisable = () => {
-          if (wakeLock !== null && wakeLock.released === false) {
-            wakeLock.release();
-            wakeLock = null;
-            this.wakeLock = null;
-            // remove event listeners
-            document.removeEventListener('visibilitychange', () => {
-              if (wakeLock !== null && document.visibilityState === 'visible') {
-                wakeLockDisable();
-              }
-            });
-            window.removeEventListener('beforeunload', () => {
-              wakeLockDisable();
-            });
-          }
-        }
-        document.addEventListener('visibilitychange', () => {
-          if (wakeLock !== null && document.visibilityState === 'visible') {
-            wakeLockDisable();
-          }
-        });
-        window.addEventListener('beforeunload', () => {
-          wakeLockDisable();
-        });
       }
     },
   },
