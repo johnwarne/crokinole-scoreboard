@@ -14,11 +14,6 @@ const app = new Vue({
       max: 100,
       increment: 5,
     },
-    tournament_score: {
-      min: 0,
-      max: 4,
-      increment: 1,
-    },
     modal: {
       visible: false,
       title: 'Settings',
@@ -65,12 +60,12 @@ const app = new Vue({
     incrementScore(player, event) {
       if(this.timeout) return;
       if(!event.target.classList.contains('disabled')) {
-        if(player.score < this.score.max) player.score = parseInt(player.score) + this.score.increment;
+        if(player.score < this.score.max) player.score = parseInt(player.score) + parseInt(this.score.increment);
       }
     },
     decrementScore(player, event) {
       if(!event.target.classList.contains('disabled')) {
-        if(player.score > this.score.min) player.score = parseInt(player.score) - this.score.increment;
+        if(player.score > this.score.min) player.score = parseInt(player.score) - parseInt(this.score.increment);
       }
     },
     resetScore() {
@@ -141,7 +136,7 @@ const app = new Vue({
       });
     },
     selectAll(event) {
-      // when input is selected, select all text
+      // When input is selected, select all text
       event.target.select();
     },
     nameCheck() {
@@ -167,7 +162,7 @@ const app = new Vue({
       this.timeout = setTimeout(() => {
         this.timeout = null;
       }, 200);
-      // Each player score in the players object must be an integer between 0 and 100 divisible by 5
+      // Each player score in the players object must be an integer between 0 and the max score divisible by the increment
       for (let i = 0; i < this.players.length; i++) {
         if(this.players[i].score < this.score.min || this.players[i].score > this.score.max) {
           this.players[i].score = this.score.min;
@@ -182,15 +177,14 @@ const app = new Vue({
       }
     },
     scoreMaxCheck() {
-      if(this.score.max <= this.score.min + this.score.increment * 2) {
-        this.score.max = this.score.min + this.score.increment * 2;
-      }
       if(isNaN(this.score.max)) {
         this.score.max = this.standard_score.max;
       }
       if(this.score.max === '') {
         this.score.max = this.standard_score.max;
       }
+      // If it's less than the increment, round it up
+      this.score.max = Math.max(this.score.max, this.score.increment);
       // If it's not divisible by the increment, round it up
       this.score.max = Math.ceil(this.score.max / this.score.increment) * this.score.increment;
       // If any player's score is at or above the new max, set it to one increment below the new max
@@ -199,6 +193,21 @@ const app = new Vue({
           this.players[i].score = this.score.max - this.score.increment;
         }
       }
+      this.scoreCheck();
+    },
+    scoreIncrementCheck() {
+      if(this.score.increment < 1) {
+        this.score.increment = 1;
+      }
+      if(isNaN(this.score.increment)) {
+        this.score.increment = this.standard_score.increment;
+      }
+      if(this.score.increment === '') {
+        this.score.increment = this.standard_score.increment;
+      }
+      // If it's not divisible by the increment, round it up
+      this.score.increment = Math.ceil(this.score.increment);
+      this.scoreMaxCheck();
     },
     openModal(show_header = true, show_settings = true, show_reset = true, title = 'Settings', message = '') {
       this.modal.show_header = show_header;
@@ -275,6 +284,31 @@ const app = new Vue({
           return '#222222';
         }
         return this.players[this.players.length - 1].color;
+      },
+    },
+    segments: {
+      get() {
+        const max_segments = 30;
+        let segments = Math.min(max_segments, Math.ceil(this.score.max / this.score.increment));
+        // If there's a way to cleanly divide the max by the increment using a number less than 30, use that number as the number of segments
+        if (segments == max_segments) {
+          for (i = segments; i >= 10; i--) {
+            if (this.score.max % (i * this.score.increment) === 0) {
+              segments = i;
+              break;
+            }
+          }
+        }
+        return segments;
+      },
+    },
+    segments_html: {
+      get() {
+        let output = '<span>' + this.score.max + '</span>';
+        for (i = this.segments - 1; i >= 0; i--) {
+          output += '<span>' + Math.ceil(i * this.score.max / this.segments) + '</span>';
+        }
+        return output;
       },
     },
     game_is_underway: {

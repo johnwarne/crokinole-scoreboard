@@ -18,7 +18,7 @@
     <meta name="application-name" content="Crokinole Scoreboard">
     <meta name="msapplication-TileColor" content="#cebaa6">
     <meta name="theme-color" content="#cebaa6">
-    <link rel="stylesheet" id="crokinole-scoreboard-style-css" href="css/style.css?v=1706830173" type="text/css" media="all">
+    <link rel="stylesheet" id="crokinole-scoreboard-style-css" href="css/style.css?v=1706918363" type="text/css" media="all">
     <link rel="preload" fetchpriority="high" as="image" href="img/wood-grain.svg" type="image/svg+xml">
   </head>
 
@@ -57,12 +57,7 @@
           <div class="track-bg"></div>
           <div v-for="(player, index) in players" class="player">
             <div class="player-piece" :name="`player-` + (index + 1) + `-color`" :id="`player-` + (index + 1) + `-color`" :style="`--player-color: ` + player.color + `; --player-score: ` + player.score / score.max" list="colors"></div>
-            <div class="player-track" :class="{ 'show-all-increments' : ((score.max - score.min) / score.increment) <= 10 }" :style="`--number-of-segments: ` + ((score.max - score.min) / score.increment)">
-              <span>{{ score.max }}</span>
-              <template v-for="index in ((score.max - score.min) / score.increment)">
-                <span>{{ score.max - (index * score.increment) }}</span>
-              </template>
-            </div>
+            <div class="player-track" :class="{ 'show-all-increments' : ((score.max - score.min) / score.increment) <= 10 }" :style="`--number-of-segments: ` + segments" v-html="segments_html"></div>
             <label :for="`player-` + (index + 1) + `-score-range`" class="sr-only">Player {{ index + 1 }} score</label>
             <input type="range" class="player-piece-range" :name="`player-` + (index + 1) + `-score-range`" :id="`player-` + (index + 1) + `-score-range`" :style="`--player-color: ` + player.color + `;`" v-model="player.score" :min="score.min" :max="score.max" :step="score.increment" :disabled="winner && player != winner" :title="`Player ` + (index + 1) + `score`"></input>
           </div>
@@ -92,10 +87,24 @@
             </div>
             <div class="modal-body">
               <div v-if="modal.message" class="modal-message" v-html="modal.message"></div>
-              <div v-if="modal.show_settings" class="form-group score-max">
-                <label for="score-max">Maximum score</label>
-                <input type="number" name="score-max" id="score-max" :step="score.increment" class="score" v-model="score.max" placeholder="100" pattern="[0-9]{1,3}" inputmode="numeric" @blur="scoreMaxCheck">
-              </div>
+              <template v-if="modal.show_settings">
+                <div class="max-score-and-increment">
+                  <div class="form-group score-max">
+                    <label for="score-max">Maximum score</label>
+                    <input type="number" name="score-max" id="score-max" :step="score.increment" :min="score.increment" class="score" v-model="score.max" placeholder="100" pattern="[0-9]{1,3}" inputmode="numeric" @change="scoreMaxCheck">
+                  </div>
+                  <div class="form-group score-increment">
+                    <label for="score-increment">Increment</label>
+                    <select name="score-increment" id="score-increment" class="score" v-model="score.increment" @change="scoreMaxCheck">
+                      <option value="1">1</option>
+                      <option value="5">5</option>
+                      <option value="10">10</option>
+                      <option value="50">50</option>
+                      <option value="100">100</option>
+                    </select>
+                  </div>
+                </div>
+              </template>
               <div v-if="modal.show_settings" class="players">
                 <div v-for="(player, index) in players" class="player" :class="[`player-` + (index + 1 ), { 'more-than-2-players' : players.length > 2 }]" :style="`--player-color: ` + player.color + `; --player-text-color: ` + setPlayerTextColor(player) + `;`">
                   <div class="form-group name">
@@ -130,7 +139,7 @@
     <script src="js/vue.min.js?v=2.7.16"></script>
     <!-- <script src="js/vue.js?v=2.7.16"></script> -->
     <script src="js/confetti.browser.min.js?v=1.9.2"></script>
-    <script type="text/javascript" src="js/script.js?1706914436"></script>
+    <script type="text/javascript" src="js/script.js?1706918363"></script>
 
   </body>
 
