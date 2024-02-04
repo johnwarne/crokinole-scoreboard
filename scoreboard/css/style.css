@@ -250,6 +250,7 @@ body .sr-only {
 }
 body #app {
   --number-of-players: 2;
+  --high-score-characters: 3;
   --bg-color: var(--theme-color-bg);
   position: relative;
   display: flex;
@@ -386,7 +387,7 @@ body #app > .players .player .form-group.player-score input {
   -moz-appearance: textfield;
   appearance: textfield;
   padding: 0;
-  font-size: 100cqb;
+  font-size: calc(100cqb * 3 / var(--high-score-characters));
   line-height: 1;
 }
 body #app > .players .player .form-group.player-score input::-webkit-outer-spin-button, body #app > .players .player .form-group.player-score input::-webkit-inner-spin-button {

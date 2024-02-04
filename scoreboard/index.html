@@ -18,13 +18,13 @@
     <meta name="application-name" content="Crokinole Scoreboard">
     <meta name="msapplication-TileColor" content="#cebaa6">
     <meta name="theme-color" content="#cebaa6">
-    <link rel="stylesheet" id="crokinole-scoreboard-style-css" href="css/style.css?v=1706920231" type="text/css" media="all">
+    <link rel="stylesheet" id="crokinole-scoreboard-style-css" href="css/style.css?v=1707070221" type="text/css" media="all">
     <link rel="preload" fetchpriority="high" as="image" href="img/wood-grain.svg" type="image/svg+xml">
   </head>
 
   <body>
 
-    <main id="app" :style="`--number-of-players: ` + players.length + `; --bg-color: ` + bg_color + `;`" v-cloak @click="keepScreenAwake">
+    <main id="app" :style="`--number-of-players: ` + players.length + `; --bg-color: ` + bg_color + `; --high-score-characters: ` + high_score_characters + `;`" v-cloak @click="keepScreenAwake">
 
       <div class="players">
         <div v-for="(player, index) in players" class="player" :class="{ 'didnt-win' : winner && player != winner}" :style="`--player-color: ` + player.color + `; --player-text-color: ` + setPlayerTextColor(player) + `;`">
@@ -139,7 +139,7 @@
     <script src="js/vue.min.js?v=2.7.16"></script>
     <!-- <script src="js/vue.js?v=2.7.16"></script> -->
     <script src="js/confetti.browser.min.js?v=1.9.2"></script>
-    <script type="text/javascript" src="js/script.js?1706918363"></script>
+    <script type="text/javascript" src="js/script.js?1707070221"></script>
 
   </body>
 

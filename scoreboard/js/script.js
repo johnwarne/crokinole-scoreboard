@@ -311,6 +311,15 @@ const app = new Vue({
         return output;
       },
     },
+    high_score_characters: {
+      get() {
+        let high_score = 0;
+        for (let i = 0; i < this.players.length; i++) {
+          high_score = Math.max(high_score, this.players[i].score);
+        }
+        return high_score.toString().length < 3 ? 3 : high_score.toString().length;
+      }
+    },
     game_is_underway: {
       get() {
         for (let i = 0; i < this.players.length; i++) {

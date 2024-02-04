@@ -179,6 +179,7 @@ body {
 	/* Main app styling */
 	#app {
 		--number-of-players: 2;
+		--high-score-characters: 3;
 		--bg-color: var(--theme-color-bg);
 		position: relative;
 		display: flex;
@@ -299,7 +300,7 @@ body {
 							-moz-appearance: textfield;
 							appearance: textfield;
 							padding: 0;
-							font-size: 100cqb;
+							font-size: calc(100cqb * (3 / var(--high-score-characters)));
 							line-height: 1;
 							&::-webkit-outer-spin-button,
 							&::-webkit-inner-spin-button {
