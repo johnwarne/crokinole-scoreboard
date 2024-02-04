@@ -299,6 +299,10 @@ const app = new Vue({
             }
           }
         }
+        // Cribbage board style
+        if (this.score.max == 120 && this.score.increment == 1) {
+          segments = 24;
+        }
         return segments;
       },
     },
