@@ -451,7 +451,6 @@ body #app .track .inner .player .player-piece {
   box-shadow: inset -2px -2px 0px rgba(0, 0, 0, 0.35), inset 2px 2px 0px rgba(255, 255, 255, 0.45);
   cursor: pointer;
   transform: translateX(-50%) translateY(50%);
-  transition: bottom 0.15s ease-out;
   z-index: 2;
 }
 body #app .track .inner .player .player-piece::-moz-color-swatch {
@@ -469,6 +468,9 @@ body #app .track .inner .player .player-piece::-moz-color-swatch {
     --piece-height: 4em;
     box-shadow: inset -4px -4px 2px rgba(0, 0, 0, 0.2), inset 4px 4px 2px rgba(255, 255, 255, 0.35), 2px 2px 2px rgba(0, 0, 0, 0.2), inset 0 0 2px rgba(0, 0, 0, 0.15);
   }
+}
+body #app .track .inner .player:not(:hover) .player-piece {
+  transition: bottom var(--transition-timing) ease-out;
 }
 body #app .track .inner .player .player-track {
   display: flex;
