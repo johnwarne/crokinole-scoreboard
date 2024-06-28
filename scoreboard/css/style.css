@@ -73,7 +73,7 @@ button, select {
   --theme-color-track-bg: var(--color-lighter-wood);
   --theme-color-modal-bg: var(--color-lighter-wood);
   /* Transitions */
-  --transition: 0.15s;
+  --transition-timing: 0.15s;
 }
 
 /* Dark mode */
@@ -560,7 +560,7 @@ body #app .track .game-actions button {
   border: 0;
   cursor: pointer;
   touch-action: manipulation;
-  transition: all var(--transition) ease-out;
+  transition: all var(--transition-timing) ease-out;
 }
 @media screen and (min-width: 768px) {
   body #app .track .game-actions button {
@@ -603,7 +603,7 @@ body #app .overlay {
   -webkit-backdrop-filter: blur(5px);
   backdrop-filter: blur(5px);
   pointer-events: none;
-  transition: opacity 0.15s ease-out;
+  transition: opacity var(--transition-timing) ease-out;
   z-index: 3;
 }
 body #app .overlay.active {
@@ -697,7 +697,7 @@ body #app .overlay .modal .modal-inner .modal-header button.close {
   cursor: pointer;
   touch-action: manipulation;
   transform: translateY(-50%);
-  transition: opacity 0.15s ease-out;
+  transition: opacity var(--transition-timing) ease-out;
 }
 @media screen and (min-width: 768px) {
   body #app .overlay .modal .modal-inner .modal-header button.close {
@@ -858,7 +858,7 @@ body #app .overlay .modal .modal-inner .modal-body .form-group.action button.rem
   background-color: transparent;
   border: 0;
   cursor: pointer;
-  transition: all var(--transition) ease-out;
+  transition: all var(--transition-timing) ease-out;
 }
 body #app .overlay .modal .modal-inner .modal-body .form-group.action button.remove-player:hover, body #app .overlay .modal .modal-inner .modal-body .form-group.action button.remove-player:focus, body #app .overlay .modal .modal-inner .modal-body .form-group.action button.remove-player:active {
   opacity: 0.5;
@@ -901,7 +901,7 @@ body #app .overlay .modal .modal-inner .modal-body .players button.add-player {
   background-color: var(--color-grey-100);
   border: 0;
   border-radius: 4px;
-  transition: all var(--transition) ease-out;
+  transition: all var(--transition-timing) ease-out;
   cursor: pointer;
 }
 body #app .overlay .modal .modal-inner .modal-body .players button.add-player:hover, body #app .overlay .modal .modal-inner .modal-body .players button.add-player:focus {
@@ -931,7 +931,7 @@ body #app .overlay .modal .modal-inner .modal-footer button {
   background-color: var(--theme-color-primary);
   border: 0;
   cursor: pointer;
-  transition: all var(--transition) ease-out;
+  transition: all var(--transition-timing) ease-out;
 }
 @media screen and (min-width: 768px) {
   body #app .overlay .modal .modal-inner .modal-footer button {
