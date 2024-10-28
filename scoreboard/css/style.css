@@ -214,6 +214,7 @@ body #app > .players .player:before {
   z-index: -1;
 }
 body #app > .players .player .form-group {
+  position: relative;
   container-type: size;
   width: 100%;
   -webkit-user-select: none;
@@ -254,6 +255,11 @@ body #app > .players .player .form-group.player-name input::placeholder {
   color: var(--player-text-color);
   opacity: 0.5;
 }
+body #app > .players .player .form-group.player-name:not(.display-names) {
+  opacity: 0;
+  pointer-events: none;
+  flex: 0 1 25%;
+}
 body #app > .players .player .form-group.player-score {
   position: relative;
   z-index: 1;
@@ -262,6 +268,7 @@ body #app > .players .player .form-group.player-score {
   justify-content: center;
   align-items: center;
   container-type: size;
+  pointer-events: none;
 }
 body #app > .players .player .form-group.player-score input {
   -moz-appearance: textfield;
@@ -280,7 +287,7 @@ body #app > .players .player .form-group.player-score input:disabled {
   touch-action: manipulation;
 }
 body #app > .players .player .form-group.increment-decrement {
-  position: relative;
+  position: unset;
   z-index: 2;
   display: flex;
   flex: 1;
@@ -312,6 +319,16 @@ body #app > .players .player .form-group.increment-decrement button.decrement.di
   cursor: not-allowed;
   touch-action: manipulation;
 }
+body #app > .players .player .form-group.increment-decrement button.increment:before,
+body #app > .players .player .form-group.increment-decrement button.decrement:before {
+  display: block;
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50%;
+  height: calc(100dvh / var(--number-of-players));
+}
 body #app > .players .player .form-group.increment-decrement button.decrement {
   justify-content: flex-end;
   padding-inline-end: min(25cqb, 10cqi);
@@ -319,6 +336,10 @@ body #app > .players .player .form-group.increment-decrement button.decrement {
 body #app > .players .player .form-group.increment-decrement button.increment {
   justify-content: flex-start;
   padding-inline-start: min(25cqb, 10cqi);
+}
+body #app > .players .player .form-group.increment-decrement button.increment:before {
+  right: 0;
+  left: auto;
 }
 body #app > .players .player.didnt-win .form-group.player-name input {
   opacity: 0.25;
@@ -838,6 +859,15 @@ body #app .overlay .modal .modal-inner .modal-body .form-group.color::before {
   border: none;
   border-radius: 50%;
   box-shadow: inset -2px -2px 0px rgba(0, 0, 0, 0.35), inset 2px 2px 0px rgba(255, 255, 255, 0.45);
+}
+body #app .overlay .modal .modal-inner .modal-body .form-group.checkbox > label {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  cursor: pointer;
+}
+body #app .overlay .modal .modal-inner .modal-body .form-group.checkbox > label > input[type=checkbox] {
+  transform: translateY(-0.1em);
 }
 body #app .overlay .modal .modal-inner .modal-body .form-group.action {
   flex: 0;

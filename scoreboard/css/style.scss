@@ -249,6 +249,7 @@ body {
 					z-index: -1;
 				}
 				.form-group {
+					position: relative;
 					container-type: size;
 					width: 100%;
 					-webkit-user-select: none;
@@ -287,6 +288,11 @@ body {
 								opacity: 0.5;
 							}
 						}
+						&:not(.display-names) {
+							opacity: 0;
+							pointer-events: none;
+							flex: 0 1 25%;
+						}
 					}
 					&.player-score {
 						position: relative;
@@ -296,6 +302,7 @@ body {
 						justify-content: center;
 						align-items: center;
 						container-type: size;
+						pointer-events: none;
 						input {
 							-moz-appearance: textfield;
 							appearance: textfield;
@@ -315,7 +322,7 @@ body {
 						}
 					}
 					&.increment-decrement {
-						position: relative;
+						position: unset;
 						z-index: 2;
 						display: flex;
 						flex: 1;
@@ -344,6 +351,15 @@ body {
 								cursor: not-allowed;
 								touch-action: manipulation;
 							}
+							&:before {
+								display: block;
+								content: '';
+								position: absolute;
+								bottom: 0;
+								left: 0;
+								width: 50%;
+								height: calc(100dvh / var(--number-of-players));
+							}
 						}
 						button.decrement {
 							justify-content: flex-end;
@@ -352,6 +368,10 @@ body {
 						button.increment {
 							justify-content: flex-start;
 							padding-inline-start: min(25cqb, 10cqi);
+							&:before {
+								right: 0;
+								left: auto;
+							}
 						}
 					}
 				}
@@ -839,6 +859,17 @@ body {
 									border: none;
 									border-radius: 50%;
 									box-shadow: inset -2px -2px 0px rgba(0, 0, 0, 0.35), inset 2px 2px 0px rgba(255, 255, 255, 0.45);
+								}
+							}
+							&.checkbox {
+								> label {
+									display: flex;
+									align-items: center;
+									gap: 0.5em;
+									cursor: pointer;
+									> input[type="checkbox"] {
+										transform: translateY(-0.1em);
+									}
 								}
 							}
 							&.action {

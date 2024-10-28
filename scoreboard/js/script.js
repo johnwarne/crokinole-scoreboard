@@ -31,26 +31,37 @@ const app = new Vue({
       '#FFFFFF', // white
     ],
     wakeLock: null,
+    display_names: false,
   },
   methods: {
     loadData() {
-      if (typeof(Storage) !== 'undefined' && localStorage.getItem('players') !== null) {
-        this.players = JSON.parse(localStorage.getItem('players'));
-        this.score = JSON.parse(localStorage.getItem('score'));
-      } else if(this.players.length < 2) {
-        this.addPlayer();
-        if(this.players.length < 2) {
-          this.addPlayer();
+      if (typeof(Storage) !== 'undefined') {
+        const storedPlayers = localStorage.getItem('players');
+        const storedScore = localStorage.getItem('score');
+        const storedDisplayNames = localStorage.getItem('display_names');
+        if (storedPlayers !== null) {
+          this.players = JSON.parse(storedPlayers);
         }
+        if (storedScore !== null) {
+          this.score = JSON.parse(storedScore);
+        }
+        if (storedDisplayNames !== null) {
+          this.display_names = JSON.parse(storedDisplayNames);
+        }
+      }
+      while (this.players.length < 2) {
+        this.addPlayer();
       }
     },
     saveData() {
       localStorage.setItem('players', JSON.stringify(this.players));
       localStorage.setItem('score', JSON.stringify(this.score));
+      localStorage.setItem('display_names', this.display_names);
     },
     resetData() {
       localStorage.removeItem('players');
       localStorage.removeItem('score');
+      localStorage.removeItem('display_names');
       this.players = [];
       this.score.min = 0;
       this.score.max = 100;
@@ -275,6 +286,11 @@ const app = new Vue({
         this.saveData();
       },
       deep: true,
+    },
+    display_names: {
+      handler: function (val, oldVal) {
+        this.saveData();
+      },
     },
   },
   computed: {
