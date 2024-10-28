@@ -356,22 +356,25 @@ body {
 								content: '';
 								position: absolute;
 								bottom: 0;
-								left: 0;
+								right: 0;
 								width: 50%;
 								height: calc(100dvh / var(--number-of-players));
+								background-color: red;
+								opacity: 0.3;
 							}
 						}
 						button.decrement {
 							justify-content: flex-end;
 							padding-inline-end: min(25cqb, 10cqi);
+							&:before {
+								right: 50%;
+								left: -300%;
+								width: auto;
+							}
 						}
 						button.increment {
 							justify-content: flex-start;
 							padding-inline-start: min(25cqb, 10cqi);
-							&:before {
-								right: 0;
-								left: auto;
-							}
 						}
 					}
 				}

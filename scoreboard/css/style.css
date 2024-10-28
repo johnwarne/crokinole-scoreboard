@@ -325,21 +325,24 @@ body #app > .players .player .form-group.increment-decrement button.decrement:be
   content: "";
   position: absolute;
   bottom: 0;
-  left: 0;
+  right: 0;
   width: 50%;
   height: calc(100dvh / var(--number-of-players));
+  background-color: red;
+  opacity: 0.3;
 }
 body #app > .players .player .form-group.increment-decrement button.decrement {
   justify-content: flex-end;
   padding-inline-end: min(25cqb, 10cqi);
 }
+body #app > .players .player .form-group.increment-decrement button.decrement:before {
+  right: 50%;
+  left: -300%;
+  width: auto;
+}
 body #app > .players .player .form-group.increment-decrement button.increment {
   justify-content: flex-start;
   padding-inline-start: min(25cqb, 10cqi);
-}
-body #app > .players .player .form-group.increment-decrement button.increment:before {
-  right: 0;
-  left: auto;
 }
 body #app > .players .player.didnt-win .form-group.player-name input {
   opacity: 0.25;
