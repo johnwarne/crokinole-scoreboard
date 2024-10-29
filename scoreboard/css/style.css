@@ -191,6 +191,7 @@ body #app > .players .player {
   flex: 1;
   z-index: 0;
   touch-action: manipulation;
+  clip-path: polygon(-500% 0, 500% 0, 500% 100%, -500% 100%);
 }
 @media screen and (max-height: 540px) {
   body #app > .players .player {
@@ -328,7 +329,7 @@ body #app > .players .player .form-group.increment-decrement button.decrement:be
   bottom: 0;
   right: 0;
   width: 50%;
-  height: calc(100dvh / var(--number-of-players));
+  top: -300%;
 }
 body #app > .players .player .form-group.increment-decrement button.decrement {
   justify-content: flex-end;
