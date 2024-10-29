@@ -200,6 +200,7 @@ body #app > .players .player {
 @media screen and (min-height: 541px) {
   body #app > .players .player:first-of-type {
     flex: 0 0 calc(100% / var(--number-of-players) + env(safe-area-inset-top) / 2);
+    padding-top: env(safe-area-inset-top);
   }
 }
 body #app > .players .player:before {

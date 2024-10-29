@@ -235,6 +235,7 @@ body {
 				&:first-of-type {
 					@media screen and (min-height: 541px) {
 						flex: 0 0 calc((100% / var(--number-of-players)) + (env(safe-area-inset-top) / 2)); // Prevents the first player's name from being cut off on iOS
+						padding-top: env(safe-area-inset-top);
 					}
 				}
 				&:before {
