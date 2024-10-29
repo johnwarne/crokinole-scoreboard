@@ -260,7 +260,12 @@ body #app > .players .player .form-group.player-name input::placeholder {
 body #app > .players .player .form-group.player-name:not(.display-names) {
   opacity: 0;
   pointer-events: none;
-  flex: 0 1 25%;
+  flex: 0 1 calc(25% + (var(--number-of-players) - 2) * 2%);
+}
+@media screen and (min-height: 541px) {
+  body #app > .players .player .form-group.player-name:not(.display-names) {
+    flex-basis: 25%;
+  }
 }
 body #app > .players .player .form-group.player-score {
   position: relative;
